@@ -34,6 +34,14 @@ function checkAndShow () {
         }
         Choice = ""
         received_symbol = ""
+    } else if (Choice == "" && received_symbol != "") {
+        basic.showLeds(`
+            # . # . #
+            # . # . #
+            # . # . #
+            # . # . #
+            . # . # .
+            `)
     } else {
     	
     }
@@ -50,6 +58,35 @@ input.onButtonPressed(Button.A, function () {
         `)
     checkAndShow()
 })
+function showReadyState () {
+    if (ready_state == 1 && other_ready == 1) {
+        basic.showLeds(`
+            . . . . .
+            . # . # .
+            . # . # .
+            . # . # .
+            . . . . .
+            `)
+    } else if (ready_state == 1 && other_ready == 0) {
+        basic.showLeds(`
+            . . . . .
+            . # . . .
+            . # . . .
+            . # . . .
+            . . . . .
+            `)
+    } else if (ready_state == 0 && other_ready == 1) {
+        basic.showLeds(`
+            . . . . .
+            . . . # .
+            . . . # .
+            . . . # .
+            . . . . .
+            `)
+    } else {
+    	
+    }
+}
 input.onButtonPressed(Button.AB, function () {
     radio.sendString("stone")
     Choice = "stone"
@@ -64,13 +101,8 @@ input.onButtonPressed(Button.AB, function () {
 })
 radio.onReceivedString(function (receivedString) {
     if (receivedString == "ready") {
-        basic.showLeds(`
-            # # # # .
-            # . . # .
-            # # # # .
-            # . # . .
-            # . . # .
-            `)
+        other_ready = 1
+        showReadyState()
     } else {
         serial.writeLine(receivedString)
         received_symbol = receivedString
@@ -91,14 +123,20 @@ input.onButtonPressed(Button.B, function () {
 })
 input.onLogoEvent(TouchButtonEvent.Pressed, function () {
     radio.sendString("ready")
+    ready_state = 1
+    showReadyState()
 })
 let result = 0
+let other_ready = 0
+let ready_state = 0
 let received_symbol = ""
 let Choice = ""
 serial.setBaudRate(BaudRate.BaudRate9600)
 radio.setGroup(1)
 Choice = ""
 received_symbol = ""
+ready_state = 0
+other_ready = 0
 basic.forever(function () {
 	
 })
