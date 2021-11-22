@@ -4,7 +4,7 @@ enum RadioMessage {
 function check (text: string) {
     if (Choice == "scissor" && text == "paper") {
         return 1
-    } else if (Choice == "paper" && text == "rock") {
+    } else if (Choice == "paper" && text == "stone") {
         return 1
     } else if (Choice == "stone" && text == "scissor") {
         return 1
@@ -13,7 +13,7 @@ function check (text: string) {
     }
 }
 function checkAndShow () {
-    if (Choice != "") {
+    if (Choice != "" && received_symbol != "") {
         result = check(received_symbol)
         if (result == 1) {
             basic.showLeds(`
@@ -35,27 +35,34 @@ function checkAndShow () {
         Choice = ""
         received_symbol = ""
     } else {
-        basic.showLeds(`
-            # . # . #
-            . # . # .
-            . . . . .
-            . . . . .
-            . . . . .
-            `)
+    	
     }
 }
 input.onButtonPressed(Button.A, function () {
     Choice = "scissor"
     radio.sendString("scissor")
+    basic.showLeds(`
+        # . . # #
+        . # . # #
+        . . # . .
+        . # . # #
+        # . . # #
+        `)
     checkAndShow()
 })
 input.onButtonPressed(Button.AB, function () {
     radio.sendString("stone")
     Choice = "stone"
+    basic.showLeds(`
+        . . . . .
+        . . . . .
+        . # # # .
+        # # # # #
+        # # # # #
+        `)
     checkAndShow()
 })
 radio.onReceivedString(function (receivedString) {
-    basic.showString(receivedString)
     if (receivedString == "ready") {
         basic.showLeds(`
             # # # # .
@@ -67,11 +74,19 @@ radio.onReceivedString(function (receivedString) {
     } else {
         serial.writeLine(receivedString)
         received_symbol = receivedString
+        checkAndShow()
     }
 })
 input.onButtonPressed(Button.B, function () {
     radio.sendString("paper")
     Choice = "paper"
+    basic.showLeds(`
+        . . . . .
+        . # # # .
+        . # # # .
+        . # # # .
+        . . . . .
+        `)
     checkAndShow()
 })
 input.onLogoEvent(TouchButtonEvent.Pressed, function () {
