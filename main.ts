@@ -1,6 +1,10 @@
 enum RadioMessage {
     message1 = 49434
 }
+// Check who wins
+// 
+// return 1 if u win
+// return 0 for all other cases (Lose and Draw)
 function check (text: string) {
     if (Choice == "scissor" && text == "paper") {
         return 1
@@ -47,16 +51,18 @@ function checkAndShow () {
     }
 }
 input.onButtonPressed(Button.A, function () {
-    Choice = "scissor"
-    radio.sendString("scissor")
-    basic.showLeds(`
-        # . . # #
-        . # . # #
-        . . # . .
-        . # . # #
-        # . . # #
-        `)
-    checkAndShow()
+    if (isReady() == 1) {
+        Choice = "scissor"
+        radio.sendString("scissor")
+        basic.showLeds(`
+            # . . # #
+            . # . # #
+            . . # . .
+            . # . # #
+            # . . # #
+            `)
+        checkAndShow()
+    }
 })
 function isReady () {
     if (ready_state == 1 && other_ready == 1) {
@@ -65,6 +71,10 @@ function isReady () {
         return 0
     }
 }
+// Show the ready state 
+// 
+// The Game is ready when both players are ready by pressing the LOGO button
+// 
 function showReadyState () {
     if (ready_state == 1 && other_ready == 1) {
         basic.showLeds(`
@@ -95,16 +105,18 @@ function showReadyState () {
     }
 }
 input.onButtonPressed(Button.AB, function () {
-    radio.sendString("stone")
-    Choice = "stone"
-    basic.showLeds(`
-        . . . . .
-        . . . . .
-        . # # # .
-        # # # # #
-        # # # # #
-        `)
-    checkAndShow()
+    if (isReady() == 1) {
+        radio.sendString("stone")
+        Choice = "stone"
+        basic.showLeds(`
+            . . . . .
+            . . . . .
+            . # # # .
+            # # # # #
+            # # # # #
+            `)
+        checkAndShow()
+    }
 })
 radio.onReceivedString(function (receivedString) {
     if (receivedString == "ready") {
@@ -117,16 +129,18 @@ radio.onReceivedString(function (receivedString) {
     }
 })
 input.onButtonPressed(Button.B, function () {
-    radio.sendString("paper")
-    Choice = "paper"
-    basic.showLeds(`
-        . . . . .
-        . # # # .
-        . # # # .
-        . # # # .
-        . . . . .
-        `)
-    checkAndShow()
+    if (isReady() == 1) {
+        radio.sendString("paper")
+        Choice = "paper"
+        basic.showLeds(`
+            . . . . .
+            . # # # .
+            . # # # .
+            . # # # .
+            . . . . .
+            `)
+        checkAndShow()
+    }
 })
 input.onLogoEvent(TouchButtonEvent.Pressed, function () {
     radio.sendString("ready")
