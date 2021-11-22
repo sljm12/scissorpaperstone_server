@@ -36,11 +36,11 @@ function checkAndShow () {
         received_symbol = ""
     } else if (Choice == "" && received_symbol != "") {
         basic.showLeds(`
-            # . # . #
-            # . # . #
-            # . # . #
-            # . # . #
+            . . # . .
             . # . # .
+            . . . # .
+            . . # . .
+            . . # . .
             `)
     } else {
     	
