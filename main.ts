@@ -58,6 +58,13 @@ input.onButtonPressed(Button.A, function () {
         `)
     checkAndShow()
 })
+function isReady () {
+    if (ready_state == 1 && other_ready == 1) {
+        return 1
+    } else {
+        return 0
+    }
+}
 function showReadyState () {
     if (ready_state == 1 && other_ready == 1) {
         basic.showLeds(`
