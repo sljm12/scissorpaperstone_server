@@ -85,6 +85,7 @@ function showReadyState () {
             . . . . .
             `)
     } else if (ready_state == 1 && other_ready == 0) {
+        player_num = 1
         basic.showLeds(`
             . . . . .
             . # . . .
@@ -93,6 +94,7 @@ function showReadyState () {
             . . . . .
             `)
     } else if (ready_state == 0 && other_ready == 1) {
+        player_num = 2
         basic.showLeds(`
             . . . . .
             . . . # .
@@ -147,6 +149,7 @@ input.onLogoEvent(TouchButtonEvent.Pressed, function () {
     ready_state = 1
     showReadyState()
 })
+let player_num = 0
 let result = 0
 let other_ready = 0
 let ready_state = 0
